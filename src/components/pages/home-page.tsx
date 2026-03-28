@@ -6,14 +6,17 @@ import { motion } from "framer-motion";
 import { Countdown } from "@/components/countdown";
 import { Container } from "@/components/container";
 import { FinalCta } from "@/components/final-cta";
+import { NotifyForm } from "@/components/notify-form";
 import { ReassuranceStrip } from "@/components/reassurance-strip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { VideoEmbed } from "@/components/video-embed";
 import { videos } from "@/data/videos";
 import { events } from "@/data/events";
+import { show } from "@/data/show";
+import { testimonials } from "@/data/testimonials";
 import {
   canReserveEvent,
   formatDateFR,
@@ -38,6 +41,7 @@ export function HomePageClient() {
   const nextEvent = getNextPublicEvent(events);
   const hasBookableNextEvent = nextEvent ? canReserveEvent(nextEvent) : false;
   const primaryHref = hasBookableNextEvent ? "/dates#billetterie" : "/dates#notify";
+  const heroTestimonials = testimonials.slice(0, 2);
 
   return (
     <Container className="py-10 sm:py-14 lg:py-16">
@@ -67,7 +71,11 @@ export function HomePageClient() {
               <h1 className="text-4xl font-[var(--font-display)] text-white sm:text-5xl md:text-6xl">
                 Une dernière pour la route
               </h1>
-              <p className="mt-4 text-base text-neutral-200 sm:text-lg">
+              <p className="mt-4 text-lg font-medium text-white/90 sm:text-xl">
+                Un seul en scène musical où l&apos;on rit, l&apos;on trinque et
+                l&apos;on se reconnaît.
+              </p>
+              <p className="mt-3 text-base text-neutral-200 sm:text-lg">
                 Un piano. Des mots. Des verres. Et beaucoup d&apos;autodérision.
               </p>
               {nextEvent ? (
@@ -80,11 +88,12 @@ export function HomePageClient() {
               ) : (
                 <div className="mt-5 max-w-2xl space-y-3">
                   <p className="text-2xl font-[var(--font-display)] text-white sm:text-3xl">
-                    Nouvelles dates bientôt annoncées
+                    Une parenthèse vive, élégante et profondément humaine
                   </p>
                   <p className="text-sm leading-relaxed text-neutral-300 sm:text-base">
-                    Le spectacle continue sa route. Laissez votre email pour être
-                    informé en priorité des prochaines représentations.
+                    Le spectacle prépare ses prochaines escales. Laissez votre
+                    email pour recevoir les prochaines dates en priorité et ne
+                    pas manquer la prochaine représentation publique.
                   </p>
                 </div>
               )}
@@ -94,7 +103,7 @@ export function HomePageClient() {
                   className="h-11 w-full rounded-full bg-white px-7 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-white sm:w-auto"
                 >
                   <Link href={primaryHref}>
-                    {hasBookableNextEvent ? "Réserver" : "Être prévenu"}
+                    {hasBookableNextEvent ? "Réserver" : "Être informé"}
                   </Link>
                 </Button>
                 <Button
@@ -103,10 +112,29 @@ export function HomePageClient() {
                   className="h-11 w-full rounded-full border border-white/20 bg-white/10 px-7 text-sm font-semibold text-white shadow-sm transition hover:bg-white/20 sm:w-auto"
                 >
                   <Link href={nextEvent ? "/dates" : "/contact"}>
-                    {nextEvent ? "Voir toutes les dates" : "Programmer le spectacle"}
+                    {nextEvent ? "Voir toutes les dates" : "Accueillir le spectacle"}
                   </Link>
                 </Button>
               </div>
+              {!nextEvent ? (
+                <div className="mt-6 max-w-2xl rounded-2xl border border-white/10 bg-black/20 p-4 backdrop-blur">
+                  <p className="mb-3 text-sm leading-relaxed text-neutral-300">
+                    Recevez les prochaines dates en priorité, dès l&apos;ouverture
+                    des nouvelles représentations.
+                  </p>
+                  <NotifyForm
+                    className="flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+                    submitLabel="Être informé"
+                    pendingLabel="Envoi en cours..."
+                    successTitle="Demande enregistrée"
+                    successMessage="Merci. Vous recevrez en priorité les prochaines dates dès leur mise en ligne."
+                    inlineFeedback
+                    inputClassName="border-white/15 bg-white/10 text-white placeholder:text-neutral-500"
+                    buttonClassName="sm:w-auto"
+                    successClassName="border-white/10 bg-white/5"
+                  />
+                </div>
+              ) : null}
             </motion.div>
 
             <motion.div
@@ -116,39 +144,137 @@ export function HomePageClient() {
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
               className="mt-10 max-w-3xl"
             >
-              {nextEvent ? (
-                <Countdown eventDate={nextEvent.dateTime} />
-              ) : (
-                <Card className="border-white/10 bg-white/5 backdrop-blur">
-                  <CardHeader className="max-w-2xl">
-                    <CardTitle className="font-[var(--font-display)] text-2xl text-white sm:text-3xl">
-                      Nouvelles dates bientôt annoncées
-                    </CardTitle>
-                    <p className="text-sm leading-relaxed text-neutral-300 sm:text-base">
-                      Inscrivez-vous pour être informé des prochaines
-                      représentations ou contactez l&apos;équipe pour une
-                      programmation privée.
-                    </p>
-                  </CardHeader>
-                  <CardFooter className="flex flex-col gap-3 sm:flex-row">
-                    <Button
-                      asChild
-                      className="h-11 w-full rounded-full bg-white px-6 text-sm font-semibold text-neutral-900 sm:w-auto"
-                    >
-                      <Link href="/dates#notify">Être prévenu</Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="secondary"
-                      className="h-11 w-full rounded-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white hover:bg-white/20 sm:w-auto"
-                    >
-                      <Link href="/contact">Programmer le spectacle</Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              )}
+              {nextEvent ? <Countdown eventDate={nextEvent.dateTime} /> : null}
             </motion.div>
           </div>
+        </section>
+
+        {!nextEvent ? (
+          <section className="grid gap-4 md:grid-cols-[1.1fr_1fr]">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeUp}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <Card className="border-white/10 bg-white/5">
+                <CardContent className="space-y-5">
+                  <p className="text-sm leading-relaxed text-neutral-300">
+                    Déjà accueilli dans des bars, hôtels et lieux
+                    événementiels, le spectacle s&apos;adapte à des contextes
+                    intimistes sans rien perdre de son élégance.
+                  </p>
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                        Format
+                      </p>
+                      <p className="mt-2 text-sm text-neutral-200">
+                        Piano, récit, humour, émotion
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                        Public
+                      </p>
+                      <p className="mt-2 text-sm text-neutral-200">
+                        Soirées intimistes, lieux vivants, événements privés
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                        Accueil
+                      </p>
+                      <p className="mt-2 text-sm text-neutral-200">
+                        Théâtres, hôtels, restaurants, lieux d&apos;exception
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeUp}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
+                {heroTestimonials.map((item) => (
+                  <Card key={item.quote} className="border-white/10 bg-white/5">
+                    <CardContent className="space-y-3">
+                      <p className="text-sm leading-relaxed text-neutral-200">
+                        &ldquo;{item.quote}&rdquo;
+                      </p>
+                      <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
+                        {item.author} · {item.source}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+        ) : null}
+
+        <section className="grid gap-6 md:grid-cols-[1.1fr_1fr] md:items-start">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeUp}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <h2 className="text-3xl font-[var(--font-display)] text-white sm:text-4xl">
+              Le spectacle
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+              Une forme légère, chaleureuse et élégante, conçue pour créer une
+              vraie proximité avec le public.
+            </p>
+          </motion.div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeUp}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+          >
+            <Card className="border-white/10 bg-white/5">
+              <CardContent className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                    Durée
+                  </p>
+                  <p className="mt-2 text-sm text-neutral-200">{show.tech.duree}</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                    Format
+                  </p>
+                  <p className="mt-2 text-sm text-neutral-200">{show.tech.format}</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                    Type de lieu
+                  </p>
+                  <p className="mt-2 text-sm text-neutral-200">
+                    Théâtres, hôtels, restaurants, lieux événementiels
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                    Ambiance
+                  </p>
+                  <p className="mt-2 text-sm text-neutral-200">
+                    Intime, drôle, musicale et raffinée
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </section>
 
         <section className="grid gap-6 md:grid-cols-[1.2fr_1fr] md:items-center">
@@ -199,7 +325,7 @@ export function HomePageClient() {
                   className="h-10 w-full rounded-full bg-white px-5 text-sm font-semibold text-neutral-900 sm:w-auto"
                 >
                   <Link href={hasBookableNextEvent ? "/dates#billetterie" : "/contact"}>
-                    {hasBookableNextEvent ? "Réserver" : "Programmer le spectacle"}
+                    {hasBookableNextEvent ? "Réserver" : "Accueillir le spectacle"}
                   </Link>
                 </Button>
               </CardFooter>
