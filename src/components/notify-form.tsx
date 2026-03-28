@@ -16,6 +16,7 @@ type NotifyFormProps = {
   inputClassName?: string;
   buttonClassName?: string;
   successClassName?: string;
+  source?: string;
 };
 
 export function NotifyForm({
@@ -28,20 +29,47 @@ export function NotifyForm({
   inputClassName,
   buttonClassName,
   successClassName,
+  source = "site",
 }: NotifyFormProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
 
     setIsSubmitting(true);
     setIsSuccess(false);
-    await new Promise((resolve) => window.setTimeout(resolve, 700));
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    toast.success(successMessage);
-    event.currentTarget.reset();
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch("/api/notify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, source }),
+      });
+
+      const data = (await response.json()) as { message?: string; error?: string };
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "Une erreur est survenue.");
+      }
+
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      toast.success(data.message ?? successMessage);
+      event.currentTarget.reset();
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Une erreur est survenue.";
+      setIsSubmitting(false);
+      setErrorMessage(message);
+      toast.error(message);
+    }
   };
 
   if (inlineFeedback && isSuccess) {
@@ -82,6 +110,11 @@ export function NotifyForm({
       >
         {isSubmitting ? pendingLabel : submitLabel}
       </Button>
+      {errorMessage ? (
+        <p className="text-sm text-red-300 sm:basis-full" aria-live="polite">
+          {errorMessage}
+        </p>
+      ) : null}
     </form>
   );
 }

@@ -129,6 +129,7 @@ export function HomePageClient() {
                     successTitle="Demande enregistrée"
                     successMessage="Merci. Vous recevrez en priorité les prochaines dates dès leur mise en ligne."
                     inlineFeedback
+                    source="home-hero"
                     inputClassName="border-white/15 bg-white/10 text-white placeholder:text-neutral-500"
                     buttonClassName="sm:w-auto"
                     successClassName="border-white/10 bg-white/5"

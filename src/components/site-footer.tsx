@@ -11,7 +11,7 @@ export function SiteFooter() {
   const primaryHref =
     nextEvent && canReserveEvent(nextEvent) ? "/dates#billetterie" : "/dates#notify";
   const primaryLabel =
-    nextEvent && canReserveEvent(nextEvent) ? "Réserver" : "Être prévenu";
+    nextEvent && canReserveEvent(nextEvent) ? "Réserver" : "Être informé";
 
   return (
     <footer className="border-t border-white/10">
@@ -38,7 +38,7 @@ export function SiteFooter() {
                 variant="outline"
                 className="h-9 rounded-full border-white/20 bg-transparent text-xs text-white hover:bg-white/10"
               >
-                <Link href="/contact">Programmer le spectacle</Link>
+                <Link href="/contact">Accueillir le spectacle</Link>
               </Button>
             </div>
             <p className="text-sm text-neutral-500">
@@ -54,7 +54,7 @@ export function SiteFooter() {
               <div className="flex flex-col gap-2">
                 <Link
                   href={`mailto:${contact.email}`}
-                  className="flex items-center gap-2 hover:text-neutral-100"
+                  className="flex items-center gap-2 break-all hover:text-neutral-100"
                   aria-label={`Envoyer un email à ${contact.name}`}
                 >
                   <Mail className="size-4 text-neutral-400" aria-hidden="true" />
@@ -62,7 +62,7 @@ export function SiteFooter() {
                 </Link>
                 <Link
                   href={`tel:${contact.phoneE164}`}
-                  className="flex items-center gap-2 hover:text-neutral-100"
+                  className="flex items-center gap-2 break-all hover:text-neutral-100"
                   aria-label={`Appeler ${contact.name}`}
                 >
                   <Phone className="size-4 text-neutral-400" aria-hidden="true" />

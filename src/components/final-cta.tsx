@@ -17,7 +17,7 @@ export function FinalCta({ variant }: FinalCtaProps) {
     : "/dates#notify";
   const audienceLabel = nextEvent && canReserveEvent(nextEvent)
     ? "Réserver"
-    : "Être prévenu";
+    : "Être informé";
 
   return (
     <Card className="border-white/10 bg-white/5">

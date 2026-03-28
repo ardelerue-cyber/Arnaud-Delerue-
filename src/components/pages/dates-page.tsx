@@ -109,14 +109,14 @@ export function DatesPageClient() {
                       asChild
                       className="h-11 rounded-full bg-white px-6 text-sm font-semibold text-neutral-900"
                     >
-                      <Link href="#notify">Être prévenu</Link>
+                      <Link href="#notify">Être informé</Link>
                     </Button>
                     <Button
                       asChild
                       variant="secondary"
                       className="h-11 rounded-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white hover:bg-white/20"
                     >
-                      <Link href="/contact">Programmer le spectacle</Link>
+                      <Link href="/contact">Accueillir le spectacle</Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -176,7 +176,10 @@ export function DatesPageClient() {
             variants={fadeUp}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
           >
-            <NotifyForm className="flex flex-col gap-3 sm:flex-row" />
+            <NotifyForm
+              className="flex flex-col gap-3 sm:flex-row"
+              source="dates-notify"
+            />
           </motion.div>
         </section>
 

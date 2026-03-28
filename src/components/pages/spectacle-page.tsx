@@ -66,7 +66,7 @@ export function SpectaclePageClient() {
                   className="h-11 w-full rounded-full bg-white px-7 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-white sm:w-auto"
                 >
                   <Link href={hasBookableNextEvent ? "/dates#billetterie" : "/dates#notify"}>
-                    {hasBookableNextEvent ? "Réserver" : "Être prévenu"}
+                    {hasBookableNextEvent ? "Réserver" : "Être informé"}
                   </Link>
                 </Button>
                 <Button
@@ -74,7 +74,7 @@ export function SpectaclePageClient() {
                   variant="secondary"
                   className="h-11 w-full rounded-full border border-white/20 bg-white/10 px-7 text-sm font-semibold text-white shadow-sm transition hover:bg-white/20 sm:w-auto"
                 >
-                  <Link href="/contact">Programmer le spectacle</Link>
+                  <Link href="/contact">Accueillir le spectacle</Link>
                 </Button>
               </div>
             </motion.div>
@@ -341,7 +341,7 @@ export function SpectaclePageClient() {
                     className="h-11 rounded-full bg-white px-6 text-sm font-semibold text-neutral-900"
                   >
                     <Link href={hasBookableNextEvent ? "/dates#billetterie" : "/dates#notify"}>
-                      {hasBookableNextEvent ? "Réserver" : "Être prévenu"}
+                      {hasBookableNextEvent ? "Réserver" : "Être informé"}
                     </Link>
                   </Button>
                   {!nextEvent ? (
@@ -350,7 +350,7 @@ export function SpectaclePageClient() {
                       variant="secondary"
                       className="h-11 rounded-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white hover:bg-white/20"
                     >
-                      <Link href="/contact">Programmer le spectacle</Link>
+                      <Link href="/contact">Accueillir le spectacle</Link>
                     </Button>
                   ) : null}
                 </div>
@@ -381,7 +381,7 @@ export function SpectaclePageClient() {
             className="h-11 w-full rounded-full bg-white text-sm font-semibold text-neutral-900"
           >
             <Link href={hasBookableNextEvent ? "/dates#billetterie" : "/dates#notify"}>
-              {hasBookableNextEvent ? "Réserver" : "Être prévenu"}
+              {hasBookableNextEvent ? "Réserver" : "Être informé"}
             </Link>
           </Button>
         </div>
