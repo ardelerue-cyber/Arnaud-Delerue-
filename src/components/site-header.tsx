@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { contact } from "@/data/contact";
+import { events } from "@/data/events";
+import { canReserveEvent, getNextPublicEvent } from "@/lib/format";
 
 const navItems = [
   { label: "Accueil", href: "/" },
@@ -23,6 +25,12 @@ const navItems = [
 ];
 
 export function SiteHeader() {
+  const nextEvent = getNextPublicEvent(events);
+  const primaryHref =
+    nextEvent && canReserveEvent(nextEvent) ? "/dates#billetterie" : "/dates#notify";
+  const primaryLabel =
+    nextEvent && canReserveEvent(nextEvent) ? "Réserver" : "Être prévenu";
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-neutral-950/70 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
@@ -59,7 +67,7 @@ export function SiteHeader() {
             asChild
             className="h-10 rounded-full bg-neutral-100 px-6 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-white"
           >
-            <Link href="/dates">Réserver</Link>
+            <Link href={primaryHref}>{primaryLabel}</Link>
           </Button>
         </div>
 
@@ -112,7 +120,7 @@ export function SiteHeader() {
                   asChild
                   className="h-11 rounded-full bg-neutral-100 px-6 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-white"
                 >
-                  <Link href="/dates">Réserver</Link>
+                  <Link href={primaryHref}>{primaryLabel}</Link>
                 </Button>
               </SheetClose>
             </SheetContent>

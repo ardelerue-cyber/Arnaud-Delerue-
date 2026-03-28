@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, Playfair_Display } from "next/font/google";
+import { siteConfig } from "@/data/site";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,23 +19,25 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "Arnaud Delerue",
+    default: `${siteConfig.title} | Arnaud Delerue`,
     template: "%s | Arnaud Delerue",
   },
-  description:
-    "Artiste contemporain. Spectacles, dates de tournée, presse et contact.",
+  metadataBase: new URL(siteConfig.url),
+  description: siteConfig.description,
   openGraph: {
     type: "website",
-    title: "Arnaud Delerue",
-    description:
-      "Artiste contemporain. Spectacles, dates de tournée, presse et contact.",
-    siteName: "Arnaud Delerue",
+    locale: "fr_FR",
+    title: `${siteConfig.title} | Arnaud Delerue`,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    url: siteConfig.url,
+    images: [{ url: siteConfig.ogImage }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Arnaud Delerue",
-    description:
-      "Artiste contemporain. Spectacles, dates de tournée, presse et contact.",
+    title: `${siteConfig.title} | Arnaud Delerue`,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
 };
 

@@ -2,69 +2,9 @@
 
 import * as React from "react";
 
-const TARGET_DAY = 14;
-const TARGET_MONTH = 3;
-const TARGET_HOUR = 20;
-const TARGET_MINUTE = 0;
-const TARGET_SECOND = 0;
-const TARGET_TIME_ZONE = "Europe/Paris";
-
-function getTimeZoneOffset(date: Date, timeZone: string) {
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    timeZone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-
-  const parts = formatter.formatToParts(date);
-  const get = (type: string) =>
-    Number(parts.find((part) => part.type === type)?.value ?? 0);
-
-  const utcTime = Date.UTC(
-    get("year"),
-    get("month") - 1,
-    get("day"),
-    get("hour"),
-    get("minute"),
-    get("second")
-  );
-
-  return (utcTime - date.getTime()) / 60000;
-}
-
-function getTargetTimestamp(year: number) {
-  const utcGuess = Date.UTC(
-    year,
-    TARGET_MONTH - 1,
-    TARGET_DAY,
-    TARGET_HOUR,
-    TARGET_MINUTE,
-    TARGET_SECOND
-  );
-  const offset = getTimeZoneOffset(new Date(utcGuess), TARGET_TIME_ZONE);
-  return utcGuess - offset * 60000;
-}
-
-function getNextTargetDate(now: Date) {
-  const currentYear = Number(
-    new Intl.DateTimeFormat("en-US", {
-      timeZone: TARGET_TIME_ZONE,
-      year: "numeric",
-    }).format(now)
-  );
-
-  const thisYearTarget = getTargetTimestamp(currentYear);
-  if (now.getTime() < thisYearTarget) {
-    return thisYearTarget;
-  }
-
-  return getTargetTimestamp(currentYear + 1);
-}
+type CountdownProps = {
+  eventDate?: string | null;
+};
 
 function formatCountdown(ms: number) {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
@@ -75,21 +15,49 @@ function formatCountdown(ms: number) {
   return { days, hours, minutes, seconds };
 }
 
-export function Countdown() {
-  const [timeLeft, setTimeLeft] = React.useState(() =>
-    formatCountdown(getNextTargetDate(new Date()) - Date.now())
-  );
+function getTargetTimestamp(eventDate?: string | null) {
+  if (!eventDate) {
+    return null;
+  }
+
+  const target = new Date(eventDate).getTime();
+  return Number.isNaN(target) ? null : target;
+}
+
+export function Countdown({ eventDate = null }: CountdownProps) {
+  const [mounted, setMounted] = React.useState(false);
+  const [isActive, setIsActive] = React.useState(false);
+  const [timeLeft, setTimeLeft] = React.useState(() => formatCountdown(0));
 
   React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    const target = getTargetTimestamp(eventDate);
+
+    if (!target || target <= Date.now()) {
+      setIsActive(false);
+      setTimeLeft(formatCountdown(0));
+      return;
+    }
+
     const tick = () => {
-      const target = getNextTargetDate(new Date());
-      setTimeLeft(formatCountdown(target - Date.now()));
+      const next = target - Date.now();
+      setIsActive(next > 0);
+      setTimeLeft(formatCountdown(next));
     };
 
     tick();
     const interval = window.setInterval(tick, 1000);
     return () => window.clearInterval(interval);
-  }, []);
+  }, [eventDate]);
+
+  const target = getTargetTimestamp(eventDate);
+
+  if (!mounted || !target || !isActive) {
+    return null;
+  }
 
   const items = [
     { label: "Jours", value: timeLeft.days },

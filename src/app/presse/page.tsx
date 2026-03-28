@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Download, Instagram, Mail, Phone } from "lucide-react";
 import { contact } from "@/data/contact";
@@ -12,6 +13,17 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Container } from "@/components/container";
+
+export const metadata: Metadata = {
+  title: "Presse",
+  description:
+    "Téléchargez le dossier de presse, la bio longue et les éléments officiels du spectacle 'Une dernière pour la route'.",
+  openGraph: {
+    title: "Presse | Une dernière pour la route",
+    description:
+      "Ressources presse et documents officiels pour médias, programmateurs et partenaires.",
+  },
+};
 
 export default function PressePage() {
   return (

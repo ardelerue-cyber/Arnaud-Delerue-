@@ -1,9 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Instagram, Mail, Phone } from "lucide-react";
 import { contact } from "@/data/contact";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/container";
+
+export const metadata: Metadata = {
+  title: "Contact booking",
+  description:
+    "Contactez l'équipe d'Arnaud Delerue pour une programmation, une demande de renseignements ou un échange autour du spectacle.",
+  openGraph: {
+    title: "Contact booking | Arnaud Delerue",
+    description:
+      "Email, téléphone et contact direct pour la programmation du spectacle 'Une dernière pour la route'.",
+  },
+};
 
 export default function ContactPage() {
   return (
